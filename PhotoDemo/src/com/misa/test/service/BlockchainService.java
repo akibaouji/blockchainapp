@@ -138,7 +138,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(true);
+				clientAttr.setIfUseEncryption(false);
 				return request;
 			}
 		}, new KeyWrapperDxo(), (short)0x0003, upEntity);

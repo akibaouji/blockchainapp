@@ -142,7 +142,7 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 				{
 					try
 					{
-						blockchainService.announce(SecurityUtility.randomInt(100), hashcode);
+						blockchainService.announce(SecurityUtility.randomInt(20), hashcode);
 						voucherService.updateUploadflag(hashcode, "1");
 						entity.setUploadTag("1");
 						if (voucherService.update(entity))

@@ -12,7 +12,8 @@ public class PhotoDemoApplication extends MisaApplication
 	private static DbHelper helper;
 	private static String uid;
 	//public static final String address = "192.168.0.23";
-	public static final String address = "192.168.0.139";
+	//public static final String address = "192.168.0.139";
+	public static final String address = "182.254.244.222";
 	public static final String port = "9710";
 	public static List<RSAPublicKey> publicKeyList;		//¹«Ô¿ÁÐ±í
 	
