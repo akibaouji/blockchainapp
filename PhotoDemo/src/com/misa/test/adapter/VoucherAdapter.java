@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.misa.droid.framework.common.ObjectFactory;
 import com.misa.droid.framework.img.ImageTool;
 import com.misa.framework.util.CollectionUtility;
+import com.misa.framework.util.SecurityUtility;
 import com.misa.test.entity.TblVoucherEntity;
 import com.misa.test.service.BlockchainService;
 import com.misa.test.service.VoucherService;
@@ -55,6 +56,7 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 			viewHolder.txtHashcode = (TextView)convertView.findViewById(R.id.txt_hashcode);
 			viewHolder.btnUpload = (Button)convertView.findViewById(R.id.btn_upload);
 			viewHolder.btDelect = (Button)convertView.findViewById(R.id.btn_delect);
+			viewHolder.txtVerifyTag = (TextView)convertView.findViewById(R.id.txt_verifyTag);
 
 			convertView.setTag(viewHolder);
 		}
@@ -77,6 +79,11 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 			else
 			{
 				viewHolder.btnUpload.setEnabled(false);
+			}
+			
+			if(entity.getVerifyTag().equals("1"))
+			{
+				viewHolder.txtVerifyTag.setText("“——È÷§");
 			}
 			
 			final View convertViewF = convertView;
@@ -135,8 +142,8 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 				{
 					try
 					{
-						//blockchainService.upload(hashcode);
-						//voucherService.updateUploadflag(hashcode, "1");
+						blockchainService.announce(SecurityUtility.randomInt(100), hashcode);
+						voucherService.updateUploadflag(hashcode, "1");
 						entity.setUploadTag("1");
 						if (voucherService.update(entity))
 						{
@@ -148,7 +155,6 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 					{
 					}
 				}
-				
 			});
 		}
 		
@@ -159,6 +165,7 @@ public class VoucherAdapter extends TestAdapterBase<TblVoucherEntity>
 	{
 		ImageView imgVoucher;
 		TextView txtHashcode;
+		TextView txtVerifyTag;
 		Button btnUpload;
 		Button btDelect;
 	}

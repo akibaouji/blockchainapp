@@ -10,7 +10,7 @@ import com.misa.test.entity.TblVoucherEntity;
 
 public class VoucherService 
 {
-	private final static String select_preffix = "select hashcode,vdata,uploadtag,updatetime,updateuser ";
+	private final static String select_preffix = "select hashcode,vdata,uploadtag,verifyTag,updatetime,updateuser ";
 	public String createFakeVoucher()
 	{
 		String hc = SecurityUtility.randomString(32);
@@ -67,6 +67,12 @@ public class VoucherService
 	{
 		PhotoDemoApplication.getDbHelper().execute("update tbl_voucher set uploadtag = ? where hashcode = ? ",
 				new Object[]{flag, hashcode});
+	}
+	
+	public void updateVerifyTag(String hashcode,String verifyTag)
+	{
+		PhotoDemoApplication.getDbHelper().execute("update tbl_voucher set verifyTag = ? where hashcode = ? ",
+				new Object[]{verifyTag, hashcode});
 	}
 	
 	public boolean update(TblVoucherEntity entity)

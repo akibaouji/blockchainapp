@@ -83,7 +83,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new BlockchainDxo(), (short)0x0002, upEntity);
@@ -113,7 +113,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new BlockchainDxo(), (short)0x0002, upEntity);
@@ -138,7 +138,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new KeyWrapperDxo(), (short)0x0003, upEntity);
@@ -174,7 +174,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new KeyWrapperDxo(), (short)0x0004, upEntity);
@@ -203,7 +203,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new AnnounceDxo(), (short)0x0005, upEntity);
@@ -230,7 +230,7 @@ public class BlockchainService
 				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
 				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
 				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(false);
+				clientAttr.setIfUseEncryption(true);
 				return request;
 			}
 		}, new AnnounceDxo(), (short)0x0006, upEntity);

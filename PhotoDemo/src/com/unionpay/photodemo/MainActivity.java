@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.interfaces.RSAPrivateKey;
+import java.security.interfaces.RSAPublicKey;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,8 +22,10 @@ import com.misa.framework.entity.PageSplitUpEntityBase;
 import com.misa.framework.exception.ApplicationException;
 import com.misa.framework.exception.DBException;
 import com.misa.framework.util.CollectionUtility;
+import com.misa.framework.util.StringUtility;
 import com.misa.test.adapter.VoucherAdapter;
 import com.misa.test.app.PhotoDemoApplication;
+import com.misa.test.entity.AnnounceEntity;
 import com.misa.test.entity.KeyWrapperEntity;
 import com.misa.test.entity.TblVoucherEntity;
 import com.misa.test.service.BlockchainService;
@@ -45,6 +48,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.v4.widget.DrawerLayout;
@@ -83,7 +88,7 @@ public class MainActivity extends ActivityBase implements IReflashListener, ILoa
 	private RefreshAndLoadListView listVoucher;
 	private TextView lblSorryContract;
 	private int currentPageNumber;
-	private int numberPerPage = 8;
+	private int numberPerPage = 9;
 	private VoucherAdapter adapter;
 	
 	@Injection(type="com.misa.test.service.VoucherService")
@@ -96,12 +101,13 @@ public class MainActivity extends ActivityBase implements IReflashListener, ILoa
 	
 	final int TAKE_PICTURE = 1;
 	public static final int SCALE = 15;
-	final int DB_VERSION = 6;
+	final int DB_VERSION = 7;
 	
 	final static String create_table_sql = "CREATE TABLE [tbl_voucher] (" +
 			"[hashcode] VARCHAR(32) NOT NULL ON CONFLICT FAIL," + 
 			"[vdata] BINARY NOT NULL," + 
 			"[uploadtag] CHAR(1) NOT NULL," + 
+			"[verifyTag] CHAR(1) NOT NULL," + 
 			"[updatetime] DATETIME NOT NULL," + 
 			"[updateuser] VARCHAR(20) NOT NULL, " +
 			"CONSTRAINT [tbl_voucher_1] PRIMARY KEY ([hashcode]))";
@@ -122,30 +128,17 @@ public class MainActivity extends ActivityBase implements IReflashListener, ILoa
 		
 		//获取phoneid
 		PhotoDemoApplication.phoneId = Settings.System.getString(getContentResolver(), Settings.System.ANDROID_ID); 
-		
-		//从服务器获取所有公钥
 		try 
 		{
+			//获取所有公钥
 			PhotoDemoApplication.publicKeyList = blockchainService.getAllPublicKey();
-			RSAPrivateKey key = blockchainService.getPrivateKey(0);
-			try 
-			{
-				String encrypt = RSAUtility.encryptByPrivateKey("123", key);
-				String res = RSAUtility.decryptByPublicKey(encrypt, PhotoDemoApplication.publicKeyList.get(0));
-				
-				System.out.println(res);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (DBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		announceTask(2000);
 	}
 
 	public void setUpViews() {
@@ -249,6 +242,7 @@ public class MainActivity extends ActivityBase implements IReflashListener, ILoa
 	                entity.setUploadTag("0"); //未上传
 	                entity.setUpdateTime(new Date());
 	                entity.setUpdateUser("sptuser");
+	                entity.setVerifyTag("0");//默认未验证
 	                if (voucherService.save(entity))
 	                {
 	                	showMessage("券证已经保存，hashcode为" + hashCode);
@@ -391,6 +385,99 @@ public class MainActivity extends ActivityBase implements IReflashListener, ILoa
 		});
 		
 		PhotoDemoApplication.setDbHelper(dbHelper);
+	}
+	
+	/**
+	 * 定时刷新任务列表
+	 */
+	public void announceTask(final int seconds)
+	{
+	    final Handler handler=new Handler();  
+	    Runnable runnable=new Runnable() {  
+	        @Override  
+	        public void run() {  
+	        	//获取所有需要验证的票据，并对验证通过的票据进行标记
+	        	List<AnnounceEntity> dataList = null;
+	        	try 
+	        	{
+	        		dataList = blockchainService.getAllTobeVerifiedAnnounce();
+				} catch (ApplicationException e) {
+					e.printStackTrace();
+				} catch (DBException e) {
+					e.printStackTrace();
+				}
+	        	if(!CollectionUtility.isNullOrEmpty(dataList))
+	        	{
+	        		for(AnnounceEntity entity : dataList)
+	        		{
+	        			int keyId = Integer.parseInt(entity.getKeyId());
+	        			RSAPublicKey publicKey = PhotoDemoApplication.publicKeyList.get(keyId);
+	        			try 
+	        			{
+							String res = RSAUtility.decryptByPublicKey(entity.getEncryptedData(), publicKey);
+							if(!StringUtility.isNullOrEmpty(res) && res.equals(entity.getPhoneId()))
+							{
+								blockchainService.verify(entity.getHashcode()); 		//标记已验证
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+	        		}
+	        	}
+	        	
+	        	//获取所有已标记的标记，并且过滤本机的票据
+	        	List<AnnounceEntity> dataList1 = null;
+	        	try {
+	        		dataList1 = blockchainService.getAllVerifiedAnnounce();
+				} catch (ApplicationException e) {
+					e.printStackTrace();
+				} catch (DBException e) {
+					e.printStackTrace();
+				}
+	        	
+	        	if(!CollectionUtility.isNullOrEmpty(dataList1))
+	        	{
+	        		for(AnnounceEntity entity : dataList1)
+	        		{
+	        			String hashCode = entity.getHashcode();
+	        			if(!StringUtility.isNullOrEmpty(hashCode))
+	        			{
+	        				for(TblVoucherEntity voucherEntity : voucherList)
+		        			{
+		        				if(hashCode.equals(voucherEntity.getHashCode()))
+		        				{
+		        					voucherService.updateVerifyTag(entity.getHashcode(),"1");//已验证
+		        					voucherEntity.setVerifyTag("1");
+		        					adapter.notifyDataSetChanged();
+		        				}
+		        			}
+	        			}
+	        		}
+	        	}
+	        	
+	        	handler.postDelayed(this, seconds);  
+	        }  
+	    };  
+	    handler.postDelayed(runnable, seconds);//定时执行一次runnable.  
+	}
+	
+	/**
+	 * 
+	 * @param seconds
+	 */
+	public void verifyTagTask(final int seconds)
+	{
+		final Handler handler=new Handler();
+		Runnable runnable=new Runnable() {  
+	        @Override  
+	        public void run() 
+	        {
+	        	
+	        	
+	        	handler.postDelayed(this, seconds);  
+	        }
+		 };  
+		 handler.postDelayed(runnable, seconds);//定时执行一次runnable.  
 	}
 	
 	public void setLblSorryContractVisible()

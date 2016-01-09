@@ -40,6 +40,13 @@ public class TblVoucherEntity extends EntityBase
 		this.uploadTag = uploadTag;
 	}
 	
+	public String getVerifyTag() {
+		return verifyTag;
+	}
+	public void setVerifyTag(String verifyTag) {
+		this.verifyTag = verifyTag;
+	}
+
 	@DbColumn(name="hashCode", pk=true)
 	private String hashCode;
 	
@@ -54,4 +61,7 @@ public class TblVoucherEntity extends EntityBase
 	
 	@DbColumn(name="updateUser")
 	private String updateUser;
+	
+	@DbColumn(name="verifyTag")
+	private String verifyTag;
 }
