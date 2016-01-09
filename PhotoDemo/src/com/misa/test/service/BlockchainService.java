@@ -59,7 +59,7 @@ public class BlockchainService
 		= new RemoteCallTemplate<BlockchainUpEntity, BlockchainDownEntity>();
 		
 		BlockchainUpEntity upEntity = new BlockchainUpEntity();
-		upEntity.setOpType("annouce");
+		upEntity.setOpType("announce");
 		upEntity.setPosId("pos1");
 		upEntity.setPhoneId(PhotoDemoApplication.phoneId);
 		upEntity.setKeyId(String.valueOf(keyIndex));
