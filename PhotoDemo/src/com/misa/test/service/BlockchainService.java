@@ -15,6 +15,7 @@ import com.misa.framework.rpc.RemoteRequest;
 import com.misa.test.app.PhotoDemoApplication;
 import com.misa.test.dxo.BlockchainDxo;
 import com.misa.test.dxo.KeyWrapperDxo;
+import com.misa.test.entity.AnnounceEntity;
 import com.misa.test.entity.BlockchainDownEntity;
 import com.misa.test.entity.BlockchainUpEntity;
 import com.misa.test.entity.KeyWrapperEntity;
@@ -143,5 +144,9 @@ public class BlockchainService
 		return RSAUtility.getPrivateKey(rtn.getModulus(), rtn.getExponent());
 	}
 	
+	public List<AnnounceEntity> getAllTobeVerifiedAnnounce() throws ApplicationException, DBException
+	{
+		return new ArrayList<AnnounceEntity>();
+	}
 	
 }
