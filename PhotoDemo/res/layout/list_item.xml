@@ -1,0 +1,76 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFF"
+    android:orientation="vertical"
+    android:paddingBottom="10dp" >
+
+    <LinearLayout
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingLeft="60dp"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/titleYear"
+            android:layout_width="25dp"
+            android:layout_height="8dp"
+            android:src="@drawable/y2015" />
+
+        <ImageView
+            android:id="@+id/titleMonth"
+            android:layout_width="92dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="2dp"
+            android:src="@drawable/december" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/point"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/point_blue" />
+
+        <com.unionpay.photodemo.CircleImageView
+            android:id="@+id/photo_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/point" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/photo_img"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="签购时间"
+                android:textColor="#ADADAD"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/photo_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4A4A4A"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

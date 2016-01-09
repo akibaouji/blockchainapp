@@ -1,0 +1,185 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#FFF" >
+
+    <LinearLayout
+        android:id="@+id/page1"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingBottom="60dp" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#46ADD7" >
+
+            <!-- avatar -->
+            <ImageView
+                android:id="@+id/person_icon"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/person_icon" />
+
+            <!-- title -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/person_icon"
+                android:layout_alignTop="@id/person_icon"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/person_icon"
+                android:gravity="center_vertical"
+                android:text="签购单"
+                android:textColor="#FFF"
+                android:textSize="28sp" />
+        </RelativeLayout>
+
+        <!-- list photo -->
+        <android.support.v4.widget.DrawerLayout
+	        android:id="@+id/drawList"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:orientation="vertical" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:orientation="vertical">
+
+            <com.misa.test.view.customize.RefreshAndLoadListView
+                android:id="@+id/listCommon"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:divider="#00000000"
+                android:dividerHeight="@dimen/list_divider_height"
+                android:drawSelectorOnTop="false" />
+
+            <TextView
+                android:id="@+id/lblSorryContract"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="对不起,未找到符合条件的数据"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+    </android.support.v4.widget.DrawerLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/page2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/person2" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/page3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/imgInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/selector_back" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true" >
+
+            <ImageView
+                android:id="@+id/btn_gz"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="40dp"
+                android:src="@drawable/selector_gz" />
+
+            <ImageView
+                android:id="@+id/btn_zx"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="40dp"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@id/btn_gz"
+                android:src="@drawable/selector_zx" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!-- footer -->
+    <LinearLayout
+        android:id="@+id/bar"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="#F8F8F8"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/btnLB"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/lb_p_bg" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/btnCA"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/selector_xj" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/btnPer"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/per_n_bg" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
