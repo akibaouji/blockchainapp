@@ -49,34 +49,6 @@ public class RSAUtility
 	    return privateKey;  
 	}
 	
-	public static void main(String s[]) throws Exception 
-	{
-		HashMap<String, Object> map = null;
-		map = RSAUtility.getKeys();
-		//生成公钥和私钥
-		RSAPublicKey publicKey = (RSAPublicKey) map.get("public");
-		RSAPrivateKey privateKey = (RSAPrivateKey) map.get("private");
-		
-		//模
-		String modulus = publicKey.getModulus().toString();
-		//公钥指数
-		String public_exponent = publicKey.getPublicExponent().toString();
-		//私钥指数
-		String private_exponent = privateKey.getPrivateExponent().toString();
-		//明文
-		String ming = "123456789";
-		//使用模和指数生成公钥和私钥
-		RSAPublicKey pubKey = RSAUtility.getPublicKey(modulus, public_exponent);
-		RSAPrivateKey priKey = RSAUtility.getPrivateKey(modulus, private_exponent);
-		//加密后的密文
-	/*	String mi = null;
-		mi = RSAUtility.encryptByPublicKey(ming, pubKey);
-		System.err.println(mi);
-		//解密后的明文
-		ming = RSAUtility.decryptByPrivateKey(mi, priKey);
-		System.err.println(ming);*/
-	}
-	
 	/**
 	 * 生成公钥和私钥
 	 * @throws NoSuchAlgorithmException 

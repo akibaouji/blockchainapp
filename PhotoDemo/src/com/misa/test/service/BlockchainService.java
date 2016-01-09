@@ -23,30 +23,7 @@ import com.misa.test.entity.KeyWrapperEntity;
 import com.misa.test.utility.RSAUtility;
 
 public class BlockchainService 
-{
-/*	public void upload(String hashcode) throws ApplicationException, DBException
-	{
-		RemoteCallTemplate<BlockchainUpEntity, BlockchainDownEntity> template
-		= new RemoteCallTemplate<BlockchainUpEntity, BlockchainDownEntity>();
-		
-		BlockchainUpEntity upEntity = new BlockchainUpEntity();
-		upEntity.setHashcode(hashcode);
-		upEntity.setOpType("upload");
-		
-		template.getOne(new IRequestBuilder(){
-			@Override
-			public RemoteRequest buildRequest(short serviceId, byte[] upData)
-					throws RemoteServiceNotFoundException {
-				// TODO Auto-generated method stub
-				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
-				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
-				clientAttr.setIfUseChecksum(true);
-				clientAttr.setIfUseEncryption(true);
-				return request;
-			}
-		}, new BlockchainDxo(), (short)0x0002, upEntity);
-	}*/
-	
+{	
 	/**
 	 * ÉùÃ÷Æ±¾Ý
 	 * @param keyIndex
