@@ -207,7 +207,32 @@ public class BlockchainService
 				return request;
 			}
 		}, new AnnounceDxo(), (short)0x0005, upEntity);
-		
 	}
 	
+	/**
+	 * 获取已经验证过的票据
+	 * @return
+	 * @throws ApplicationException
+	 * @throws DBException
+	 */
+	public List<AnnounceEntity> getAllVerifiedAnnounce() throws ApplicationException, DBException
+	{
+		RemoteCallTemplate<BlockchainUpEntity, AnnounceEntity> template
+		= new RemoteCallTemplate<BlockchainUpEntity, AnnounceEntity>();
+		
+		BlockchainUpEntity upEntity = new BlockchainUpEntity();
+		upEntity.setPhoneId(PhotoDemoApplication.phoneId);
+		
+		return template.getList(new IRequestBuilder(){
+			@Override
+			public RemoteRequest buildRequest(short serviceId, byte[] upData)
+					throws RemoteServiceNotFoundException {
+				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
+				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
+				clientAttr.setIfUseChecksum(true);
+				clientAttr.setIfUseEncryption(false);
+				return request;
+			}
+		}, new AnnounceDxo(), (short)0x0006, upEntity);
+	}
 }
