@@ -13,6 +13,7 @@ import com.misa.framework.rpc.IRequestBuilder;
 import com.misa.framework.rpc.RemoteCallTemplate;
 import com.misa.framework.rpc.RemoteRequest;
 import com.misa.test.app.PhotoDemoApplication;
+import com.misa.test.dxo.AnnounceDxo;
 import com.misa.test.dxo.BlockchainDxo;
 import com.misa.test.dxo.KeyWrapperDxo;
 import com.misa.test.entity.AnnounceEntity;
@@ -146,7 +147,24 @@ public class BlockchainService
 	
 	public List<AnnounceEntity> getAllTobeVerifiedAnnounce() throws ApplicationException, DBException
 	{
-		return new ArrayList<AnnounceEntity>();
+		RemoteCallTemplate<BlockchainUpEntity, AnnounceEntity> template
+		= new RemoteCallTemplate<BlockchainUpEntity, AnnounceEntity>();
+		
+		BlockchainUpEntity upEntity = new BlockchainUpEntity();
+		upEntity.setPhoneId(PhotoDemoApplication.phoneId);
+		
+		return template.getList(new IRequestBuilder(){
+			@Override
+			public RemoteRequest buildRequest(short serviceId, byte[] upData)
+					throws RemoteServiceNotFoundException {
+				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
+				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
+				clientAttr.setIfUseChecksum(true);
+				clientAttr.setIfUseEncryption(false);
+				return request;
+			}
+		}, new AnnounceDxo(), (short)0x0005, upEntity);
+		
 	}
 	
 }
