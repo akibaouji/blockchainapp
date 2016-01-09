@@ -90,6 +90,36 @@ public class BlockchainService
 	}
 	
 	/**
+	 * 验证票据
+	 * @param hashcode
+	 * @throws ApplicationException
+	 * @throws DBException
+	 */
+	public void verify(String hashcode) throws ApplicationException, DBException
+	{
+		RemoteCallTemplate<BlockchainUpEntity, BlockchainDownEntity> template
+		= new RemoteCallTemplate<BlockchainUpEntity, BlockchainDownEntity>();
+		
+		BlockchainUpEntity upEntity = new BlockchainUpEntity();
+		upEntity.setPhoneId(PhotoDemoApplication.phoneId);
+		upEntity.setHashcode(hashcode);
+		upEntity.setOpType("verify");
+		
+		template.getOne(new IRequestBuilder(){
+			@Override
+			public RemoteRequest buildRequest(short serviceId, byte[] upData)
+					throws RemoteServiceNotFoundException {
+				// TODO Auto-generated method stub
+				RemoteRequest request = new RemoteRequest(PhotoDemoApplication.address,PhotoDemoApplication.port,(byte)0x0B,(byte)0x01,serviceId,upData);
+				ClientAttribute clientAttr = request.getCommonProtocolObj().getClientAttr();
+				clientAttr.setIfUseChecksum(true);
+				clientAttr.setIfUseEncryption(false);
+				return request;
+			}
+		}, new BlockchainDxo(), (short)0x0002, upEntity);
+	}
+	
+	/**
 	 * 获取所有公钥
 	 * @return
 	 * @throws ApplicationException
@@ -123,6 +153,13 @@ public class BlockchainService
 		return lst;
 	}
 	
+	/**
+	 * 获取私钥
+	 * @param index
+	 * @return
+	 * @throws ApplicationException
+	 * @throws DBException
+	 */
 	public RSAPrivateKey getPrivateKey(int index) throws ApplicationException, DBException
 	{
 		RemoteCallTemplate<BlockchainUpEntity, KeyWrapperEntity> template
@@ -145,6 +182,12 @@ public class BlockchainService
 		return RSAUtility.getPrivateKey(rtn.getModulus(), rtn.getExponent());
 	}
 	
+	/**
+	 * 获取所有需要验证的票据
+	 * @return
+	 * @throws ApplicationException
+	 * @throws DBException
+	 */
 	public List<AnnounceEntity> getAllTobeVerifiedAnnounce() throws ApplicationException, DBException
 	{
 		RemoteCallTemplate<BlockchainUpEntity, AnnounceEntity> template
